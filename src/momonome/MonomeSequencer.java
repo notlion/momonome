@@ -19,6 +19,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	
 	private MonomeCombo tapCombo;
 	private MonomeCombo[] switchCombo;
+	private MonomeCombo[] cueCombo;
 	
 	private ArrayList<MonomeSequencerBeatListener> beatListeners;
 	
@@ -38,12 +39,18 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		
 		// Pattern Switch Combos
 		switchCombo = new MonomeCombo[nx];
+		cueCombo = new MonomeCombo[nx];
 		for(int i = 0; i < nx; i++)
 		{
 			switchCombo[i] = new MonomeCombo();
 			switchCombo[i].add(0, 7);
 			switchCombo[i].add(i, 0);
 			addCombo(switchCombo[i]);
+			
+			cueCombo[i] = new MonomeCombo();
+			cueCombo[i].add(1, 7);
+			cueCombo[i].add(i, 0);
+			addCombo(cueCombo[i]);
 		}
 		
 		// Slice to Show Current Play Head Position
@@ -71,6 +78,13 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	public void setBpm(float bpm)
 	{
 		metronome.bpm = bpm;
+	}
+	
+	public void setPosition(int _position)
+	{
+		setLedCol(position, getSlice(position));
+		position = _position;
+		setLedCol(position, playHeadSlice);
 	}
 	
 	
@@ -105,15 +119,23 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		if(event.combo == tapCombo)
 		{
 			metronome.tap();
-			System.out.println(metronome.bpm);
 		}
 		else {
-			for(int i = 0; i < switchCombo.length; i++)
+			for(int i = 0; i < nx; i++)
 			{
 				if(event.combo == switchCombo[i])
 				{
 					patternIndex = i;
 					setLedFrame(patterns[patternIndex]);
+					break;
+				}
+			}
+			for(int i = 0; i < nx; i++)
+			{
+				if(event.combo == cueCombo[i])
+				{
+					setPosition(i);
+					metronome.reset();
 					break;
 				}
 			}
@@ -123,9 +145,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 
 	public void onBeat(Metronome m)
 	{
-		setLedCol(position, getSlice(position));
-		position = (position + 1) % nx;
-		setLedCol(position, playHeadSlice);
+		setPosition((position + 1) % nx);
 		
 		MonomeSequencerBeatEvent event = new MonomeSequencerBeatEvent(this);
 		

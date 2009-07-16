@@ -48,8 +48,6 @@ public class Metronome implements Runnable
 				tickoff += _tickBuffer.get(i-1) - _tickBuffer.get(i);
 			tickoff /= _tickBuffer.size() - 1;
 			
-			System.out.println(tickoff);
-			
 			bpm = 60000.0f / tickoff;
 		}
 	}
@@ -74,6 +72,12 @@ public class Metronome implements Runnable
 	public void stop()
 	{
 		beatThread = null;
+	}
+	
+	public void reset()
+	{
+		stop();
+		start();
 	}
 	
 	public void run()
