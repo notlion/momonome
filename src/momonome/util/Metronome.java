@@ -82,7 +82,8 @@ public class Metronome implements Runnable
 	
 	public void run()
 	{
-		while(beatThread != null)
+		Thread myThread = beatThread;
+		while(myThread == beatThread)
 		{
 			try
 			{

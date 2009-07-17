@@ -96,6 +96,13 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		setLedCol(position, playHeadSlice);
 	}
 	
+	public void cuePosition(int _position)
+	{
+		setLedCol(position, getSlice(position));
+		position = _position;
+		metronome.reset();
+	}
+	
 	
 	public int[] getSlice(int pos)
 	{
@@ -143,8 +150,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 			{
 				if(event.combo == cueCombo[i])
 				{
-					setPosition(i);
-					metronome.reset();
+					cuePosition(i == 0 ? nx - 1 : i - 1);
 					break;
 				}
 			}
