@@ -68,7 +68,8 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		metronome.bpm = 120;
 		metronome.resolution = nx / 4;
 		metronome.addListener(this);
-		metronome.start();
+		
+		cuePosition(0);
 		
 		addListener(this);
 	}
@@ -99,7 +100,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	public void cuePosition(int _position)
 	{
 		setLedCol(position, getSlice(position));
-		position = _position;
+		position = _position == 0 ? nx - 1 : _position - 1;
 		metronome.reset();
 	}
 	
@@ -150,7 +151,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 			{
 				if(event.combo == cueCombo[i])
 				{
-					cuePosition(i == 0 ? nx - 1 : i - 1);
+					cuePosition(i);
 					break;
 				}
 			}
