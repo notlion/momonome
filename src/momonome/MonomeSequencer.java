@@ -6,6 +6,7 @@ import momonome.OscMonome.MonomeEventListener;
 import momonome.util.Metronome;
 import momonome.util.Metronome.MetronomeListener;
 import oscP5.OscP5;
+import processing.core.PApplet;
 
 
 public class MonomeSequencer extends OscMonome implements MonomeEventListener, MetronomeListener
@@ -31,10 +32,13 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		patterns = new int[nx][nx][ny];
 		patternIndex = 0;
 		
+		int nx1 = nx - 1;
+		int ny1 = ny - 1;
+		
 		// Tap Tempo Combo
 		tapCombo = new MonomeCombo();
-		tapCombo.add(0, 7);
-		tapCombo.add(7, 7);
+		tapCombo.add(0, ny1);
+		tapCombo.add(nx1, ny1);
 		addCombo(tapCombo);
 		
 		// Pattern Switch Combos
@@ -43,12 +47,12 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		for(int i = 0; i < nx; i++)
 		{
 			switchCombo[i] = new MonomeCombo();
-			switchCombo[i].add(0, 7);
+			switchCombo[i].add(0, ny1);
 			switchCombo[i].add(i, 0);
 			addCombo(switchCombo[i]);
 			
 			cueCombo[i] = new MonomeCombo();
-			cueCombo[i].add(1, 7);
+			cueCombo[i].add(1, ny1);
 			cueCombo[i].add(i, 0);
 			addCombo(cueCombo[i]);
 		}
@@ -67,6 +71,11 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		metronome.start();
 		
 		addListener(this);
+	}
+	
+	public MonomeSequencer(PApplet app, String oscName, int hostPort, int listenPort, int nx, int ny)
+	{
+		this(new OscP5(app, hostPort, OscP5.UDP), oscName, listenPort, nx, ny);
 	}
 	
 	

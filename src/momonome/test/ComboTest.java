@@ -22,12 +22,11 @@ public class ComboTest extends PApplet implements MonomeEventListener
 	{
 		size(200,200);
 		
-		monome = new OscMonome(this, "40h", 8000,8080, 8,8);
+		monome = new OscMonome(this, "40h", 8000,8080, 16,16);
 		MonomeCombo combo = monome.getNewCombo();
 		combo.add(0, 0);
-		combo.add(7, 0);
-		combo.add(7, 7);
-		combo.add(0, 7);
+		combo.add(1, 0);
+		combo.add(0, 1);
 		monome.addCombo(combo);
 		monome.addListener(this);
 	}
@@ -45,6 +44,7 @@ public class ComboTest extends PApplet implements MonomeEventListener
 
 	public void onMonomeCombo(MonomeComboEvent event)
 	{
+		println("hello");
 		monome.toggleLedFrame();
 	}
 }

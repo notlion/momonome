@@ -112,7 +112,7 @@ public class OscMonome implements OscEventListener
 	{
 		setLedColRow(led_col_addr, x, states);
 		
-		for(int i = ledState.length; --i >= 0;)
+		for(int i = ny; --i >= 0;)
 			ledState[i][x] = states[i];
 	}
 	public void toggleLedCol(int x)
@@ -127,7 +127,7 @@ public class OscMonome implements OscEventListener
 	{
 		setLedColRow(led_row_addr, y, states);
 		
-		for(int i = ledState.length; --i >= 0;)
+		for(int i = nx; --i >= 0;)
 			ledState[y][i] = states[i];
 	}
 	public void toggleLedRow(int y)
@@ -145,7 +145,7 @@ public class OscMonome implements OscEventListener
 		
 		byte[] bytes = getPackedBytes(states);
 		for(int j = 0; j < bytes.length; j++)
-			msg.add(bytes[j]);
+			msg.add(bytes[j] & 0xff);
 		
 		osc.send(msg, oscOut);
 	}
@@ -153,16 +153,32 @@ public class OscMonome implements OscEventListener
 	
 	public void setLedFrame(int[][] frame)
 	{
-		OscMessage msg = new OscMessage(led_frame_addr);
-		
-		for(int y = 0; y < ny; y++)
+		// We can only update 8x8 sections so we need to split up the full frame
+		for(int y = 0; y < ny; y += 8)
 		{
-			byte[] bytes = getPackedBytes(frame[y]);
-			for(int b = 0; b < bytes.length; b++)
-				msg.add(bytes[b]);
+			for(int x = 0; x < nx; x += 8)
+			{
+				OscMessage msg = new OscMessage(led_frame_addr);
+				
+				msg.add(x);
+				msg.add(y);
+				
+				for(int fy = y; fy < y + 8; fy++)
+				{
+					int[] row = new int[8];
+					for(int i = 0; i < 8; i++)
+						row[i] = frame[fy][x + i];
+					msg.add(getPackedBytes(row)[0] & 0xff);
+					System.out.print(getPackedBytes(row)[0] & 0xff);
+					System.out.print(" ");
+				}
+				System.out.println("-- " + x + " " + y);
+				
+				osc.send(msg, oscOut);
+			}
 		}
 		
-		osc.send(msg, oscOut);
+		System.out.println();
 		
 		for(int y = 0; y < ny; y++)
 			System.arraycopy(frame[y], 0, ledState[y], 0, nx);
