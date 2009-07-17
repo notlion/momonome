@@ -65,7 +65,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		beatListeners = new ArrayList<MonomeSequencerBeatListener>();
 		
 		metronome = new Metronome();
-		metronome.bpm = 120;
+		metronome.bpm = 140;
 		metronome.resolution = nx / 4;
 		metronome.addListener(this);
 		
