@@ -1,4 +1,4 @@
-package momonome.test;
+package momonome.examples;
 
 import momonome.MonomeSequencer;
 import momonome.MonomeSequencer.MonomeSequencerBeatEvent;
@@ -6,14 +6,14 @@ import momonome.MonomeSequencer.MonomeSequencerBeatListener;
 import processing.core.PApplet;
 
 
-public class SequencerTest extends PApplet implements MonomeSequencerBeatListener
+public class SequencerExample extends PApplet implements MonomeSequencerBeatListener
 {
 	private MonomeSequencer monome;
 	
 	
 	public static void main(String[] args)
 	{
-		PApplet.main(new String[]{ "momonome.test.SequencerTest" });
+		PApplet.main(new String[]{ "momonome.examples.SequencerExample" });
 	}
 	
 	

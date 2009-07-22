@@ -15,14 +15,14 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	public int position;
 	public int patternIndex;
 	
-	private int[][][] patterns;
-	private int[] playHeadSlice;
+	protected int[][][] patterns;
+	protected int[] playHeadSlice;
 	
-	private MonomeCombo tapCombo;
-	private MonomeCombo[] switchCombo;
-	private MonomeCombo[] cueCombo;
+	protected MonomeCombo tapCombo;
+	protected MonomeCombo[] switchCombo;
+	protected MonomeCombo[] cueCombo;
 	
-	private ArrayList<MonomeSequencerBeatListener> beatListeners;
+	protected ArrayList<MonomeSequencerBeatListener> beatListeners;
 	
 	
 	public MonomeSequencer(OscP5 osc, String oscName, int listenPort, int nx, int ny)

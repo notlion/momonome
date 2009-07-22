@@ -1,4 +1,4 @@
-package momonome.test;
+package momonome.examples;
 
 import momonome.OscMonome;
 import momonome.OscMonome.MonomeButtonEvent;
@@ -8,14 +8,14 @@ import momonome.OscMonome.MonomeEventListener;
 import processing.core.PApplet;
 
 
-public class ComboTest extends PApplet implements MonomeEventListener
+public class ComboExample extends PApplet implements MonomeEventListener
 {
 	private OscMonome monome;
 	
 	
 	public static void main(String[] args)
 	{
-		PApplet.main(new String[]{ "momonome.test.ComboTest" });
+		PApplet.main(new String[]{ "momonome.examples.ComboExample" });
 	}
 	
 	public void setup()
