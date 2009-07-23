@@ -15,7 +15,7 @@ public class MonomeRippleSequencer extends MonomeSequencer implements MonomeSequ
 	
 	protected int nr;
 	
-	public int rippleSteps = 6;
+	public int rippleSteps = 4;
 	
 	
 	public MonomeRippleSequencer(OscP5 osc, String oscName, int listenPort, int nx, int ny)
@@ -92,8 +92,13 @@ public class MonomeRippleSequencer extends MonomeSequencer implements MonomeSequ
 	{
 		int[][] frame = new int[ny][nx];
 		for(int y = 0; y < ny; y++)
+		{
 			for(int x = 0; x < nx; x++)
-				frame[y][x] = x == position || cripple[(y + 1) * (nx + 2) + x + 1] >= ON || patterns[patternIndex][y][x] == ON ? ON : OFF;
+			{
+				boolean st = cripple[(y + 1) * (nx + 2) + x + 1] >= ON || patterns[patternIndex][y][x] == ON;
+				frame[y][x] = (x == position && patterns[patternIndex][y][x] == ON ? !st : st) ? ON : OFF;
+			}
+		}
 		
 		setLedFrame(frame);
 	}
