@@ -29,7 +29,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	{
 		super(osc, oscName, listenPort, nx, ny);
 		
-		patterns = new int[nx][nx][ny];
+		patterns = new int[nx][ny][nx];
 		patternIndex = 0;
 		
 		int nx1 = nx - 1;
@@ -105,6 +105,13 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	}
 	
 	
+	public void setState(int x, int y, int state)
+	{
+		patterns[patternIndex][y][x] = state;
+		setLed(x, y, state);
+	}
+	
+	
 	public int[] getSlice(int pos)
 	{
 		int[][] pattern = patterns[patternIndex];
@@ -118,16 +125,17 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 	{
 		return patterns[index];
 	}
+	public int[][] getPattern()
+	{
+		return patterns[patternIndex];
+	}
 
 	
 	public void onMonomeButton(MonomeButtonEvent event)
 	{
 		if(event.state == OFF)
 		{
-			int[][] pattern = patterns[patternIndex];
-			int state = pattern[event.y][event.x] == OFF ? ON : OFF;
-			pattern[event.y][event.x] = state;
-			setLed(event.x, event.y, state);
+			setState(event.x, event.y, patterns[patternIndex][event.y][event.x] == OFF ? ON : OFF);
 		}
 	}
 

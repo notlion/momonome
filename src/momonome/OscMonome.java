@@ -169,16 +169,16 @@ public class OscMonome implements OscEventListener
 					for(int i = 0; i < 8; i++)
 						row[i] = frame[fy][x + i];
 					msg.add(getPackedBytes(row)[0] & 0xff);
-					System.out.print(getPackedBytes(row)[0] & 0xff);
-					System.out.print(" ");
+//					System.out.print(getPackedBytes(row)[0] & 0xff);
+//					System.out.print(" ");
 				}
-				System.out.println("-- " + x + " " + y);
+//				System.out.println("-- " + x + " " + y);
 				
 				osc.send(msg, oscOut);
 			}
 		}
 		
-		System.out.println();
+//		System.out.println();
 		
 		for(int y = 0; y < ny; y++)
 			System.arraycopy(frame[y], 0, ledState[y], 0, nx);

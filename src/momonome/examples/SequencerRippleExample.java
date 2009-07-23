@@ -1,19 +1,20 @@
 package momonome.examples;
 
+import momonome.MonomeRippleSequencer;
 import momonome.MonomeSequencer;
 import momonome.MonomeSequencer.MonomeSequencerBeatEvent;
 import momonome.MonomeSequencer.MonomeSequencerBeatListener;
 import processing.core.PApplet;
 
 
-public class SequencerExample extends PApplet implements MonomeSequencerBeatListener
+public class SequencerRippleExample extends PApplet implements MonomeSequencerBeatListener
 {
-	private MonomeSequencer monome;
+	private MonomeRippleSequencer monome;
 	
 	
 	public static void main(String[] args)
 	{
-		PApplet.main(new String[]{ "momonome.examples.SequencerExample" });
+		PApplet.main(new String[]{ "momonome.examples.SequencerRippleExample" });
 	}
 	
 	
@@ -23,12 +24,13 @@ public class SequencerExample extends PApplet implements MonomeSequencerBeatList
 		smooth();
 		frameRate(30);
 		
-		monome = new MonomeSequencer(this, "40h", 8000,8080, 8,8);
+		monome = new MonomeRippleSequencer(this, "40h", 8000,8080, 8,8);
 		monome.addBeatListener(this);
 	}
 	
 	public void draw()
 	{
+		monome.step();
 	}
 	
 	
