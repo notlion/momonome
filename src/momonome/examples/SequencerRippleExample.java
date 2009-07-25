@@ -25,12 +25,13 @@ public class SequencerRippleExample extends PApplet implements MonomeSequencerBe
 		frameRate(30);
 		
 		monome = new MonomeRippleSequencer(this, "40h", 8000,8080, 8,8);
+		monome.setRippleRate(1500);
 		monome.addBeatListener(this);
+		monome.startRipple();
 	}
 	
 	public void draw()
 	{
-		monome.step();
 	}
 	
 	

@@ -1,6 +1,7 @@
 package momonome;
 
 import momonome.MonomeSequencer.MonomeSequencerBeatListener;
+import momonome.util.Metronome;
 import oscP5.OscP5;
 import processing.core.PApplet;
 
@@ -14,6 +15,8 @@ public class MonomeRippleSequencer extends MonomeSequencer implements MonomeSequ
 	protected int[] rcheck_off;
 	
 	protected int nr;
+	
+	private Metronome rippleTimer;
 	
 	public int rippleSteps = 4;
 	
@@ -33,6 +36,10 @@ public class MonomeRippleSequencer extends MonomeSequencer implements MonomeSequ
 		};
 		
 		addBeatListener(this);
+		
+		rippleTimer = new Metronome();
+		rippleTimer.resolution = 1;
+		setRippleRate(30);
 	}
 	
 	public MonomeRippleSequencer(PApplet app, String oscName, int hostPort, int listenPort, int nx, int ny)
@@ -114,5 +121,30 @@ public class MonomeRippleSequencer extends MonomeSequencer implements MonomeSequ
 	{
 		position = _position == 0 ? nx - 1 : _position - 1;
 		metronome.reset();
+	}
+	
+	
+	public void setRippleRate(int bpm)
+	{
+		rippleTimer.bpm = bpm;
+	}
+	
+	public void startRipple()
+	{
+		rippleTimer.addListener(this);
+		rippleTimer.start();
+	}
+	public void stopRipple()
+	{
+		rippleTimer.stop();
+		rippleTimer.removeListener(this);
+	}
+	
+	public void onBeat(Metronome m)
+	{
+		if(m == rippleTimer)
+			step();
+		else
+			super.onBeat(m);
 	}
 }

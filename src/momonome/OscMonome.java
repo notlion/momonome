@@ -292,7 +292,7 @@ public class OscMonome implements OscEventListener
 		
 		public String toString()
 		{
-			return "{x:" + x + ",y:" + y + "state:" + state + "}";
+			return "{x:" + x + ",y:" + y + ",state:" + state + "}";
 		}
 	}
 	
