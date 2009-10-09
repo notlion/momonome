@@ -11,8 +11,8 @@ import processing.core.PApplet;
  * @year 2009
  */
 public class DisplaySurfaceTest extends PApplet
-{    
-    private MonomeSequencer monome;
+{
+	private MonomeSequencer monome;
     private DisplaySurface monomeD;
     
     
@@ -48,6 +48,6 @@ public class DisplaySurfaceTest extends PApplet
     
     public static void main(String[] args)
     {
-        PApplet.main(new String[]{ "DisplaySurfaceTest" });
-    }    
+        PApplet.main(new String[]{ "momonome.examples.DisplaySurfaceTest" });
+    }
 }
