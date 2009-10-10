@@ -211,7 +211,7 @@ public class OscMonome implements OscEventListener
 	
 	private void sendOscMsg(OscMessage msg)
 	{
-		for(int i = oscOut.size(); --i > 0;)
+		for(int i = oscOut.size(); --i >= 0;)
 			osc.send(msg, oscOut.get(i));
 	}
 	
