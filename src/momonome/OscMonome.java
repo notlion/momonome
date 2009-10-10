@@ -50,7 +50,7 @@ public class OscMonome implements OscEventListener
 		listeners = new ArrayList<MonomeEventListener>();
 		combos = new ArrayList<MonomeCombo>();
 		
-		clearLeds(0);
+		clearLeds(OFF);
 	}
 	
 	public OscMonome(PApplet app, String oscName, int inPort, int outPort, int nx, int ny)
