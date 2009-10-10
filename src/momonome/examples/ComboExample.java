@@ -28,7 +28,7 @@ public class ComboExample extends PApplet implements MonomeEventListener
 		combo.add(1, 0);
 		combo.add(0, 1);
 		monome.addCombo(combo);
-		monome.addListener(this);
+		monome.addEventListener(this);
 	}
 	
 	public void draw()

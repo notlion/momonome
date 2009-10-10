@@ -13,7 +13,7 @@ import processing.core.PApplet;
 public class OscMonome implements OscEventListener
 {
 	public OscP5 osc;
-	public NetAddress oscOut;
+	public ArrayList<NetAddress> oscOut;
 	
 	public String baseName;
 	public String press_addr, led_addr, led_col_addr, led_row_addr, led_frame_addr, led_clear_addr, led_intensity_addr;
@@ -30,7 +30,7 @@ public class OscMonome implements OscEventListener
 	public static final int OFF = 0;
 	
 	
-	public OscMonome(OscP5 osc, String oscName, int listenPort, int nx, int ny)
+	public OscMonome(OscP5 osc, String oscName, int outPort, int nx, int ny)
 	{
 		setBaseName(oscName);
 		
@@ -44,7 +44,8 @@ public class OscMonome implements OscEventListener
 		
 		osc.addListener(this);
 		
-		oscOut = new NetAddress("localhost", listenPort);
+		oscOut = new ArrayList<NetAddress>();
+		addOscListener("localhost", outPort);
 		
 		listeners = new ArrayList<MonomeEventListener>();
 		combos = new ArrayList<MonomeCombo>();
@@ -52,14 +53,14 @@ public class OscMonome implements OscEventListener
 		clearLeds(0);
 	}
 	
-	public OscMonome(PApplet app, String oscName, int hostPort, int listenPort, int nx, int ny)
+	public OscMonome(PApplet app, String oscName, int inPort, int outPort, int nx, int ny)
 	{
-		this(new OscP5(app, hostPort, OscP5.UDP), oscName, listenPort, nx, ny);
+		this(new OscP5(app, inPort, OscP5.UDP), oscName, outPort, nx, ny);
 	}
 	
-	public OscMonome(PApplet app, String oscName, int hostPort, int listenPort)
+	public OscMonome(PApplet app, String oscName, int inPort, int outPort)
 	{
-		this(new OscP5(app, hostPort, OscP5.UDP), oscName, listenPort, 8, 8);
+		this(new OscP5(app, inPort, OscP5.UDP), oscName, outPort, 8, 8);
 	}
 	
 	
@@ -99,7 +100,9 @@ public class OscMonome implements OscEventListener
 		msg.add(x);
 		msg.add(y);
 		msg.add(state);
-		osc.send(msg, oscOut);
+		
+		sendOscMsg(msg);
+		
 		ledState[y][x] = state;
 	}
 	public void toggleLed(int x, int y)
@@ -147,10 +150,11 @@ public class OscMonome implements OscEventListener
 		for(int j = 0; j < bytes.length; j++)
 			msg.add(bytes[j] & 0xff);
 		
-		osc.send(msg, oscOut);
+		sendOscMsg(msg);
 	}
 	
 	
+	// TODO this is broken for larger than 8x8 monomes
 	public void setLedFrame(int[][] frame)
 	{
 		// We can only update 8x8 sections so we need to split up the full frame
@@ -174,7 +178,7 @@ public class OscMonome implements OscEventListener
 				}
 //				System.out.println("-- " + x + " " + y);
 				
-				osc.send(msg, oscOut);
+				sendOscMsg(msg);
 			}
 		}
 		
@@ -197,13 +201,19 @@ public class OscMonome implements OscEventListener
 	{
 		OscMessage msg = new OscMessage(led_clear_addr);
 		msg.add(state);
-		osc.send(msg, oscOut);
+		sendOscMsg(msg);
 		
 		for(int y = ledState.length; --y >= 0;)
 			for(int x = ledState[y].length; --x >= 0;)
 				ledState[y][x] = state;
 	}
 	
+	
+	private void sendOscMsg(OscMessage msg)
+	{
+		for(int i = oscOut.size(); --i > 0;)
+			osc.send(msg, oscOut.get(i));
+	}
 	
 	private byte[] getPackedBytes(int[] states)
 	{
@@ -218,7 +228,12 @@ public class OscMonome implements OscEventListener
 	}
 	
 	
-	public void addListener(MonomeEventListener listener)
+	public void addOscListener(String outAddr, int outPort)
+	{
+		oscOut.add(new NetAddress(outAddr, outPort));
+	}
+	
+	public void addEventListener(MonomeEventListener listener)
 	{
 		listeners.add(listener);
 	}

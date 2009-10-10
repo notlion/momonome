@@ -21,7 +21,7 @@ public class MonomeLevels extends OscMonome implements MonomeEventListener
 		levels = new float[nx];
 		levelListeners = new ArrayList<MonomeLevelListener>();
 		
-		addListener(this);
+		addEventListener(this);
 	}
 	
 	public MonomeLevels(PApplet app, String oscName, int hostPort, int listenPort, int nx, int ny)

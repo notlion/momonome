@@ -71,7 +71,7 @@ public class MonomeSequencer extends OscMonome implements MonomeEventListener, M
 		
 		cuePosition(0);
 		
-		addListener(this);
+		addEventListener(this);
 	}
 	
 	public MonomeSequencer(PApplet app, String oscName, int hostPort, int listenPort, int nx, int ny)
